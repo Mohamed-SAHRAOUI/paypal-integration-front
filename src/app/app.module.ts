@@ -1,18 +1,32 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import {NgxPayPalModule} from "ngx-paypal";
+import { PaypalComponent } from './components/paypal/paypal.component';
+import {HttpClientModule} from "@angular/common/http";
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {CommonModule, DatePipe} from "@angular/common";
+import { CardNumberDirective } from './directive/cardNumberDirective/card-number.directive';
+import { ExpiryDateDirective } from './directive/expiryDateDirective/expiry-date.directive';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    PaypalComponent,
+    CardNumberDirective,
+    ExpiryDateDirective
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    NgxPayPalModule,
+    HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule,
+    CommonModule
   ],
-  providers: [],
+  providers: [DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
