@@ -25,14 +25,9 @@ export class PaypalComponent implements OnInit {
 
   form = new FormGroup({
     name: new FormControl('', Validators.required),
-    expirationDateControl: new FormControl('', [Validators.required]),
+    expirationDateControl: new FormControl('', Validators.required),
     securityCode: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(3)]),
-    number: new FormControl('', [
-      Validators.required,
-      Validators.minLength(16),
-      Validators.maxLength(16),
-      Validators.pattern('[0-9]*')
-    ]),
+    number: new FormControl('', Validators.required),
     addressLine1: new FormControl(''),
     adminArea2: new FormControl(''),
     postalCode: new FormControl(''),
@@ -71,10 +66,7 @@ export class PaypalComponent implements OnInit {
     const dateArray = inputDate.split('/');
     const month = dateArray[0];
     const year = dateArray[1];
-    console.log(month);
-    console.log(year);
     const transformedDate= this.datePipe.transform(`${month}/01/${year}`, 'yyyy-MM');
-    console.log(transformedDate);
     return transformedDate || "";
   }
 
