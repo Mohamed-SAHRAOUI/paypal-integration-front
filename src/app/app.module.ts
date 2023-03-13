@@ -9,13 +9,15 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {CommonModule, DatePipe} from "@angular/common";
 import { CardNumberDirective } from './directive/cardNumberDirective/card-number.directive';
 import { ExpiryDateDirective } from './directive/expiryDateDirective/expiry-date.directive';
+import { SuccessComponent } from './components/success/success.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     PaypalComponent,
     CardNumberDirective,
-    ExpiryDateDirective
+    ExpiryDateDirective,
+    SuccessComponent
   ],
   imports: [
     BrowserModule,

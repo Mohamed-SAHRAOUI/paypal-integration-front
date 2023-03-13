@@ -3,6 +3,7 @@ import {ICreateOrderRequest, IPayPalConfig} from "ngx-paypal";
 import {FormGroup, FormControl, Validators} from "@angular/forms";
 import {OrderService} from "../../services/order-service.service";
 import {DatePipe} from "@angular/common";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-paypal',
@@ -17,7 +18,8 @@ export class PaypalComponent implements OnInit {
   public payPalConfig ? : IPayPalConfig;
 
   constructor(private orderService:OrderService,
-              private datePipe: DatePipe) { }
+              private datePipe: DatePipe,
+              private router: Router) { }
 
   ngOnInit(): void {
     this.initConfig();
@@ -55,10 +57,10 @@ export class PaypalComponent implements OnInit {
       const orderId = res.id;
       this.orderService.confirmPaymentSource(orderId, customData).subscribe(res => {
         this.orderService.capturePayment(orderId).subscribe(res => {
-          alert('Transaction completed!');
-        }, error => {})
-      }, error => {})
-    }, error => {})
+          this.router.navigate(['/success']);
+        }, error => {console.error(error);})
+      }, error => {console.error(error);})
+    }, error => {console.error(error);})
 
   }
 
