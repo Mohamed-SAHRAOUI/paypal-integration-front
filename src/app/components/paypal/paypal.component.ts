@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import {ICreateOrderRequest, IPayPalConfig} from "ngx-paypal";
 import {FormGroup, FormControl, Validators} from "@angular/forms";
 import {OrderService} from "../../services/order-service.service";
 import {DatePipe} from "@angular/common";
 import {Router} from "@angular/router";
+
+declare var paypal: any;
 
 @Component({
   selector: 'app-paypal',
@@ -12,10 +13,6 @@ import {Router} from "@angular/router";
 })
 export class PaypalComponent implements OnInit {
 
-  private showSuccess: boolean | undefined;
-  private showCancel: boolean | undefined;
-  private showError: boolean | undefined;
-  public payPalConfig ? : IPayPalConfig;
 
   constructor(private orderService:OrderService,
               private datePipe: DatePipe,
@@ -78,56 +75,20 @@ export class PaypalComponent implements OnInit {
 
 
   private initConfig(): void {
-    this.payPalConfig = {
-      currency: 'USD',
-      clientId: 'ARcH6XwhNehcMGbnkDb5LyATL2zybxR74kWtSbxN2IUukqn9JzjxTyVF7SZxcMfHGBc6zr5vrH1a7bWH',
-      createOrderOnClient: (data) => < ICreateOrderRequest > {
-        intent: 'CAPTURE',
-        purchase_units: [{
-          amount: {
-            currency_code: 'USD',
-            value: '9.99',
-            breakdown: {
-              item_total: {
-                currency_code: 'USD',
-                value: '9.99'
-              }
-            }
-          }
-        }]
+    paypal.Buttons({
+      createOrder: () => {
+        return this.orderService.createOrders()
+          .toPromise()
+          .then((response: any) => response.id);
       },
-      advanced: {
-        commit: 'true',
-        extraQueryParams: [ { name: "disable-funding", value:"credit,card"} ]
+      onApprove: (data: any) => {
+        return this.orderService.capturePayment(data.orderID)
+          .toPromise()
+          .then(() => {
+            this.router.navigate(['/success']);
+          });
       },
-      style: {
-        label: 'paypal',
-        layout: 'vertical'
-      },
-      onApprove: (data, actions) => {
-        console.log('onApprove - transaction was approved, but not authorized', data, actions);
-        actions.order.get().then((details: any) => {
-          console.log('onApprove - you can get full order details inside onApprove: ', details);
-        });
-
-      },
-      onClientAuthorization: (data) => {
-        console.log('onClientAuthorization - you should probably inform your server about completed transaction at this point', data);
-        this.showSuccess = true;
-      },
-      onCancel: (data, actions) => {
-        console.log('OnCancel', data, actions);
-        this.showCancel = true;
-
-      },
-      onError: err => {
-        console.log('OnError', err);
-        this.showError = true;
-      },
-      onClick: (data, actions) => {
-        console.log('onClick', data, actions);
-      }
-    };
+    }).render("#paypal-button-container");
   }
 
 }
