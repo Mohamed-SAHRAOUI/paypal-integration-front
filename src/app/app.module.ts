@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import {NgModule} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -9,7 +9,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {CommonModule, DatePipe} from "@angular/common";
 import { CardNumberDirective } from './directive/cardNumberDirective/card-number.directive';
 import { ExpiryDateDirective } from './directive/expiryDateDirective/expiry-date.directive';
-import { SuccessComponent } from './components/success/success.component';
+import {SuccessComponent} from './components/success/success.component';
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {NgbAccordionModule, NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -26,7 +28,10 @@ import { SuccessComponent } from './components/success/success.component';
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    CommonModule
+    CommonModule,
+    BrowserAnimationsModule,
+    NgbModule,
+    NgbAccordionModule
   ],
   providers: [DatePipe],
   bootstrap: [AppComponent]

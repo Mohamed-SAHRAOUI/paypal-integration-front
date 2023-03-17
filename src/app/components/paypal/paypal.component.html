@@ -1,97 +1,111 @@
-<div id="paypal-button-container" class="paypal-button-container">
-  <ngx-paypal></ngx-paypal>
+<div class="accordion-container">
+  <h1>PayPal Payment</h1>
+  <ngb-accordion #acc="ngbAccordion" [closeOthers]="true">
+    <ngb-panel id="panel-0" title="Pay with PayPal">
+      <ng-template ngbPanelContent>
+        <div id="paypal-button-container" class="paypal-button-container">
+          <ngx-paypal [config]="payPalConfig"></ngx-paypal>
+        </div>
+      </ng-template>
+    </ngb-panel>
+    <ngb-panel id="panel-1" title="Pay with Card">
+      <ng-template ngbPanelContent>
+        <div class="card_container">
+          <form id="card-form" [formGroup]="form" (ngSubmit)="onSubmit()">
+            <label for="card-number">Card Number</label>
+            <input id="card-number" type="text" class="form-control card_field" formControlName="number"
+                   placeholder="XXXX-XXXX-XXXX-XXXX" appCardNumber>
+            <div *ngIf="(f.number.errors || f.number.dirty || f.number.touched)" class="invalid-feedback">
+              <span *ngIf="f.number.errors?.['required']">Insert Valid Card Number</span>
+            </div>
+            <div style="display: flex; flex-direction: row;">
+              <div>
+                <label for="expiration-date">Expiration Date</label>
+                <input id="expiration-date" type="text" class="form-control card_field"
+                       formControlName="expirationDateControl"
+                       placeholder="MM/YY" appExpiryDate>
+              </div>
+              <div style="margin-left: 10px;">
+                <label for="cvv">CVV</label>
+                <input id="cvv" type="text" class="form-control card_field" formControlName="securityCode"
+                       placeholder="123">
+              </div>
+            </div>
+            <label for="card-holder-name">Name on Card</label>
+            <input
+              type="text"
+              id="card-holder-name"
+              name="card-holder-name"
+              autocomplete="off"
+              formControlName="name"
+              placeholder="card holder name"
+            />
+            <div>
+              <label for="card-billing-address-street">Billing Address</label>
+              <input
+                type="text"
+                id="card-billing-address-street"
+                name="card-billing-address-street"
+                autocomplete="off"
+                formControlName="addressLine1"
+                placeholder="street address"
+              />
+            </div>
+            <div>
+              <label for="card-billing-address-unit">&nbsp;</label>
+              <input
+                type="text"
+                id="card-billing-address-unit"
+                name="card-billing-address-unit"
+                autocomplete="off"
+                placeholder="unit"
+              />
+            </div>
+            <div>
+              <input
+                type="text"
+                id="card-billing-address-city"
+                name="card-billing-address-city"
+                autocomplete="off"
+                formControlName="adminArea2"
+                placeholder="city"
+              />
+            </div>
+            <div>
+              <input
+                type="text"
+                id="card-billing-address-state"
+                name="card-billing-address-state"
+                autocomplete="off"
+                placeholder="state"
+              />
+            </div>
+            <div>
+              <input
+                type="text"
+                id="card-billing-address-zip"
+                name="card-billing-address-zip"
+                autocomplete="off"
+                formControlName="postalCode"
+                placeholder="zip / postal code"
+              />
+            </div>
+            <div>
+              <input
+                type="text"
+                id="card-billing-address-country"
+                name="card-billing-address-country"
+                autocomplete="off"
+                formControlName="countryCode"
+                placeholder="country code"
+              />
+            </div>
+            <br/><br/>
+            <button class="btn btn-primary" [disabled]="form.invalid" type="submit">Submit</button>
+          </form>
+        </div>
+      </ng-template>
+    </ngb-panel>
+  </ngb-accordion>
 </div>
 
-<div class="card_container">
-  <form id="card-form" [formGroup]="form" (ngSubmit)="onSubmit()">
-    <label for="card-number">Card Number</label>
-    <input id="card-number" type="text" class="form-control card_field" formControlName="number"
-             placeholder="XXXX-XXXX-XXXX-XXXX" appCardNumber>
-    <div *ngIf="(f.number.errors || f.number.dirty || f.number.touched)" class="invalid-feedback">
-                          <span *ngIf="f.number.errors?.['required']">Insert Valid Card Number</span>
-    </div>
-    <div style="display: flex; flex-direction: row;">
-      <div>
-        <label for="expiration-date">Expiration Date</label>
-        <input id="expiration-date" type="text" class="form-control card_field" formControlName="expirationDateControl"
-               placeholder="MM/YY" appExpiryDate>
-      </div>
-      <div style="margin-left: 10px;">
-        <label for="cvv">CVV</label>
-        <input id="cvv" type="text" class="form-control card_field" formControlName="securityCode"
-               placeholder="123">
-      </div>
-    </div>
-    <label for="card-holder-name">Name on Card</label>
-    <input
-      type="text"
-      id="card-holder-name"
-      name="card-holder-name"
-      autocomplete="off"
-      formControlName="name"
-      placeholder="card holder name"
-    />
-    <div>
-      <label for="card-billing-address-street">Billing Address</label>
-      <input
-        type="text"
-        id="card-billing-address-street"
-        name="card-billing-address-street"
-        autocomplete="off"
-        formControlName="addressLine1"
-        placeholder="street address"
-      />
-    </div>
-    <div>
-      <label for="card-billing-address-unit">&nbsp;</label>
-      <input
-        type="text"
-        id="card-billing-address-unit"
-        name="card-billing-address-unit"
-        autocomplete="off"
-        placeholder="unit"
-      />
-    </div>
-    <div>
-      <input
-        type="text"
-        id="card-billing-address-city"
-        name="card-billing-address-city"
-        autocomplete="off"
-        formControlName="adminArea2"
-        placeholder="city"
-      />
-    </div>
-    <div>
-      <input
-        type="text"
-        id="card-billing-address-state"
-        name="card-billing-address-state"
-        autocomplete="off"
-        placeholder="state"
-      />
-    </div>
-    <div>
-      <input
-        type="text"
-        id="card-billing-address-zip"
-        name="card-billing-address-zip"
-        autocomplete="off"
-        formControlName="postalCode"
-        placeholder="zip / postal code"
-      />
-    </div>
-    <div>
-      <input
-        type="text"
-        id="card-billing-address-country"
-        name="card-billing-address-country"
-        autocomplete="off"
-        formControlName="countryCode"
-        placeholder="country code"
-      />
-    </div>
-    <br /><br />
-    <button class="btn btn-primary" [disabled]="form.invalid" type="submit">Submit</button>
-  </form>
-</div>

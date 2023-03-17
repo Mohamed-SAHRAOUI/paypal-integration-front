@@ -165,3 +165,12 @@ button {
 .btn_small:hover {
   background-color: powderblue;
 }
+
+
+
+.accordion-container {
+  margin-left: 15%;
+  margin-top: 10%;
+  margin-right: 15%;
+}
+

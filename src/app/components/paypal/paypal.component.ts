@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormGroup, FormControl, Validators} from "@angular/forms";
 import {OrderService} from "../../services/order-service.service";
 import {DatePipe} from "@angular/common";
 import {Router} from "@angular/router";
+import {IPayPalConfig} from "ngx-paypal";
 
 declare var paypal: any;
 
@@ -13,7 +14,7 @@ declare var paypal: any;
 })
 export class PaypalComponent implements OnInit {
 
-
+  public payPalConfig?: IPayPalConfig;
   constructor(private orderService:OrderService,
               private datePipe: DatePipe,
               private router: Router) { }
@@ -75,11 +76,20 @@ export class PaypalComponent implements OnInit {
 
 
   private initConfig(): void {
-    paypal.Buttons({
-      createOrder: () => {
+    this.payPalConfig = {
+      currency: '',
+      clientId: '',
+      createOrderOnServer: () => {
         return this.orderService.createOrders()
           .toPromise()
           .then((response: any) => response.id);
+      },
+      advanced: {
+        commit: 'true'
+      },
+      style:{
+        label:'paypal',
+        layout:'vertical'
       },
       onApprove: (data: any) => {
         return this.orderService.capturePayment(data.orderID)
@@ -88,7 +98,16 @@ export class PaypalComponent implements OnInit {
             this.router.navigate(['/success']);
           });
       },
-    }).render("#paypal-button-container");
+      onCancel:(data: any, actions: any)=>{
+        console.log('OnCancel', data, actions);
+
+      },
+      onError:(err :any)=>{
+        console.log('OnError', err);
+
+      },
+
+    };
   }
 
 }
