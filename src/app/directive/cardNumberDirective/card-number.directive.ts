@@ -10,7 +10,7 @@ export class CardNumberDirective {
   @HostListener('input', ['$event'])
   onInput(event: any) {
     const input = event.target;
-    const trimmed = input.value.replace(/\s+/g, '');
+    const trimmed = input.value.replace(/[^0-9]/g, '');
     if (trimmed.length > 16) {
       input.value = trimmed.slice(0, 16);
     } else {
