@@ -13,22 +13,28 @@
         <div class="card_container">
           <form id="card-form" [formGroup]="form" (ngSubmit)="onSubmit()">
             <label for="card-number">Card Number</label>
-            <input id="card-number" type="text" class="form-control card_field" formControlName="number"
+            <input id="card-number" type="text" class="form-control card_field" [ngClass]="{ 'is-valid': !f.number.invalid , 'is-invalid': f.number.invalid }" formControlName="number" maxlength="19"
                    placeholder="XXXX-XXXX-XXXX-XXXX" appCardNumber>
-            <div *ngIf="(f.number.errors || f.number.dirty || f.number.touched)" class="invalid-feedback">
-              <span *ngIf="f.number.errors?.['required']">Insert Valid Card Number</span>
+            <div *ngIf="f.number.errors && ( f.number.dirty || f.number.touched)" class="invalid-feedback">
+              <span *ngIf="f.number.errors?.['required'] || f.number.invalid">Insert Valid Card Number</span>
             </div>
             <div style="display: flex; flex-direction: row;">
               <div>
                 <label for="expiration-date">Expiration Date</label>
-                <input id="expiration-date" type="text" class="form-control card_field"
+                <input id="expiration-date" type="text" class="form-control card_field" [ngClass]="{ 'is-valid': !f.expirationDateControl.invalid , 'is-invalid': f.expirationDateControl.invalid }"
                        formControlName="expirationDateControl"
                        placeholder="MM/YY" appExpiryDate>
+                <div *ngIf="f.expirationDateControl.errors && ( f.expirationDateControl.dirty || f.expirationDateControl.touched)" class="invalid-feedback">
+                  <span *ngIf="f.expirationDateControl.errors?.['required'] || f.expirationDateControl.invalid">Insert Valid Expiration Date</span>
+                </div>
               </div>
               <div style="margin-left: 10px;">
                 <label for="cvv">CVV</label>
-                <input id="cvv" type="text" class="form-control card_field" formControlName="securityCode" maxlength="3" minlength="3"
+                <input id="cvv" type="text" class="form-control card_field" formControlName="securityCode" maxlength="3" minlength="3" [ngClass]="{ 'is-valid': !f.securityCode.invalid , 'is-invalid': f.securityCode.invalid }"
                        placeholder="123">
+                <div *ngIf="f.securityCode.errors && ( f.securityCode.dirty || f.securityCode.touched)" class="invalid-feedback">
+                  <span *ngIf="f.securityCode.errors?.['required'] || f.securityCode.invalid">Insert Valid CVV</span>
+                </div>
               </div>
             </div>
             <label for="card-holder-name">Name on Card</label>
@@ -38,8 +44,12 @@
               name="card-holder-name"
               autocomplete="off"
               formControlName="name"
+              [ngClass]="{ 'is-valid': !f.name.invalid , 'is-invalid': f.name.invalid }"
               placeholder="card holder name"
             />
+            <div *ngIf="f.name.errors && ( f.name.dirty || f.name.touched)" class="invalid-feedback">
+              <span *ngIf="f.name.errors?.['required'] || f.name.invalid">Insert Valid Name</span>
+            </div>
             <div>
               <label for="card-billing-address-street">Billing Address</label>
               <input
@@ -97,8 +107,12 @@
                 name="card-billing-address-country"
                 autocomplete="off"
                 formControlName="countryCode"
+                [ngClass]="{ 'is-valid': !f.countryCode.invalid , 'is-invalid': f.countryCode.invalid }"
                 placeholder="country code"
               />
+              <div *ngIf="f.countryCode.errors && ( f.countryCode.dirty || f.countryCode.touched)" class="invalid-feedback">
+                <span *ngIf="f.countryCode.errors?.['required'] || f.countryCode.invalid">Insert Valid Country Code</span>
+              </div>
             </div>
             <br/><br/>
             <button class="btn btn-primary" [disabled]="form.invalid" type="submit">Submit</button>

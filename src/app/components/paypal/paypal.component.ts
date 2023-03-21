@@ -25,9 +25,9 @@ export class PaypalComponent implements OnInit {
 
   form = new FormGroup({
     name: new FormControl('', Validators.required),
-    expirationDateControl: new FormControl('', Validators.required),
+    expirationDateControl: new FormControl('', [Validators.required, Validators.minLength(5)]),
     securityCode: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(3)]),
-    number: new FormControl('', Validators.required),
+    number: new FormControl('', [Validators.required, Validators.minLength(19)]),
     addressLine1: new FormControl(''),
     adminArea2: new FormControl(''),
     postalCode: new FormControl(''),
