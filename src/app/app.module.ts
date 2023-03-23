@@ -12,6 +12,9 @@ import { ExpiryDateDirective } from './directive/expiryDateDirective/expiry-date
 import {SuccessComponent} from './components/success/success.component';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {NgbAccordionModule, NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {MatSnackBarModule} from "@angular/material/snack-bar";
+import {FaIconLibrary, FontAwesomeModule} from "@fortawesome/angular-fontawesome";
+import {faCcMastercard, faCcPaypal, faCcVisa} from '@fortawesome/free-brands-svg-icons';
 
 @NgModule({
   declarations: [
@@ -31,9 +34,15 @@ import {NgbAccordionModule, NgbModule} from '@ng-bootstrap/ng-bootstrap';
     CommonModule,
     BrowserAnimationsModule,
     NgbModule,
-    NgbAccordionModule
+    NgbAccordionModule,
+    MatSnackBarModule,
+    FontAwesomeModule
   ],
   providers: [DatePipe],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  constructor(library: FaIconLibrary) {
+    library.addIcons(faCcPaypal,faCcVisa,faCcMastercard);
+  }
+}

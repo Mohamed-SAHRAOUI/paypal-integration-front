@@ -174,3 +174,29 @@ button {
   margin-right: 15%;
 }
 
+.cc-paypal{
+  font-size: 24px;
+  color: #eec153;
+  margin: 5px;
+  /*margin-left: 80%;*/
+}
+
+.cc-visa{
+  font-size: 24px;
+}
+.cc-mastercard{
+  font-size: 24px;
+}
+
+.icon-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /*margin-left: 80%;*/
+}
+
+.icon-container fa-icon {
+  margin: 0 5px;
+}
+
+

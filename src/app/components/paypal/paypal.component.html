@@ -1,38 +1,57 @@
 <div class="accordion-container">
   <h1>PayPal Payment</h1>
   <ngb-accordion #acc="ngbAccordion" [closeOthers]="true">
-    <ngb-panel id="panel-0" title="Pay with PayPal">
+    <ngb-panel id="panel-0">
+      <ng-template ngbPanelTitle>
+        Pay with PayPal
+        <fa-icon [icon]="['fab', 'cc-paypal']" class="fa cc-paypal"></fa-icon>
+      </ng-template>
       <ng-template ngbPanelContent>
         <div id="paypal-button-container" class="paypal-button-container">
           <ngx-paypal [config]="payPalConfig"></ngx-paypal>
         </div>
       </ng-template>
     </ngb-panel>
-    <ngb-panel id="panel-1" title="Pay with Card">
+    <ngb-panel id="panel-1">
+      <ng-template ngbPanelTitle>
+        Pay with Card
+        <div class="icon-container">
+          <fa-icon [icon]="['fab', 'cc-visa']" class="fa cc-visa"></fa-icon>
+          <fa-icon [icon]="['fab', 'cc-mastercard']" class="fa cc-mastercard"></fa-icon>
+        </div>
+      </ng-template>
       <ng-template ngbPanelContent>
         <div class="card_container">
           <form id="card-form" [formGroup]="form" (ngSubmit)="onSubmit()">
             <label for="card-number">Card Number</label>
-            <input id="card-number" type="text" class="form-control card_field" [ngClass]="{ 'is-valid': !f.number.invalid , 'is-invalid': f.number.invalid }" formControlName="number" maxlength="19"
+            <input id="card-number" type="text" class="form-control card_field"
+                   [ngClass]="{ 'is-valid': !f.number.invalid , 'is-invalid': f.number.invalid }"
+                   formControlName="number" maxlength="19"
                    placeholder="XXXX-XXXX-XXXX-XXXX" appCardNumber>
             <div *ngIf="f.number.errors && ( f.number.dirty || f.number.touched)" class="invalid-feedback">
               <span *ngIf="f.number.errors?.['required'] || f.number.invalid">Insert Valid Card Number</span>
             </div>
             <div style="display: flex; flex-direction: row;">
-              <div>
+              <div style="width: 45%;">
                 <label for="expiration-date">Expiration Date</label>
-                <input id="expiration-date" type="text" class="form-control card_field" [ngClass]="{ 'is-valid': !f.expirationDateControl.invalid , 'is-invalid': f.expirationDateControl.invalid }"
+                <input id="expiration-date" type="text" class="form-control card_field"
+                       [ngClass]="{ 'is-valid': !f.expirationDateControl.invalid , 'is-invalid': f.expirationDateControl.invalid }"
                        formControlName="expirationDateControl"
                        placeholder="MM/YY" appExpiryDate>
-                <div *ngIf="f.expirationDateControl.errors && ( f.expirationDateControl.dirty || f.expirationDateControl.touched)" class="invalid-feedback">
+                <div
+                  *ngIf="f.expirationDateControl.errors && ( f.expirationDateControl.dirty || f.expirationDateControl.touched)"
+                  class="invalid-feedback">
                   <span *ngIf="f.expirationDateControl.errors?.['required'] || f.expirationDateControl.invalid">Insert Valid Expiration Date</span>
                 </div>
               </div>
-              <div style="margin-left: 10px;">
+              <div style="width: 50%; margin-left: 5%">
                 <label for="cvv">CVV</label>
-                <input id="cvv" type="text" class="form-control card_field" formControlName="securityCode" maxlength="3" minlength="3" [ngClass]="{ 'is-valid': !f.securityCode.invalid , 'is-invalid': f.securityCode.invalid }"
+                <input id="cvv" type="text" class="form-control card_field" formControlName="securityCode" maxlength="3"
+                       minlength="3"
+                       [ngClass]="{ 'is-valid': !f.securityCode.invalid , 'is-invalid': f.securityCode.invalid }"
                        placeholder="123">
-                <div *ngIf="f.securityCode.errors && ( f.securityCode.dirty || f.securityCode.touched)" class="invalid-feedback">
+                <div *ngIf="f.securityCode.errors && ( f.securityCode.dirty || f.securityCode.touched)"
+                     class="invalid-feedback">
                   <span *ngIf="f.securityCode.errors?.['required'] || f.securityCode.invalid">Insert Valid CVV</span>
                 </div>
               </div>
@@ -110,8 +129,10 @@
                 [ngClass]="{ 'is-valid': !f.countryCode.invalid , 'is-invalid': f.countryCode.invalid }"
                 placeholder="country code"
               />
-              <div *ngIf="f.countryCode.errors && ( f.countryCode.dirty || f.countryCode.touched)" class="invalid-feedback">
-                <span *ngIf="f.countryCode.errors?.['required'] || f.countryCode.invalid">Insert Valid Country Code</span>
+              <div *ngIf="f.countryCode.errors && ( f.countryCode.dirty || f.countryCode.touched)"
+                   class="invalid-feedback">
+                <span
+                  *ngIf="f.countryCode.errors?.['required'] || f.countryCode.invalid">Insert Valid Country Code</span>
               </div>
             </div>
             <br/><br/>
