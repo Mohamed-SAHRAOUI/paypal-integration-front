@@ -4,8 +4,9 @@ import {OrderService} from "../../services/order-service.service";
 import {DatePipe} from "@angular/common";
 import {Router} from "@angular/router";
 import {IPayPalConfig} from "ngx-paypal";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {HttpErrorResponse} from "@angular/common/http";
 
-declare var paypal: any;
 
 @Component({
   selector: 'app-paypal',
@@ -17,7 +18,8 @@ export class PaypalComponent implements OnInit {
   public payPalConfig?: IPayPalConfig;
   constructor(private orderService:OrderService,
               private datePipe: DatePipe,
-              private router: Router) { }
+              private router: Router,
+              private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.initConfig();
@@ -38,7 +40,7 @@ export class PaypalComponent implements OnInit {
     const customData = {
       "payment_source": {
         "card":{
-          "number": this.form.value.number,
+          "number": this.form.value.number?.replace(/\s+/g,''),
           "expiry": this.transformDate(this.form.value.expirationDateControl || ""),
           "securityCode": this.form.value.securityCode,
           "name": this.form.value.name,
@@ -57,9 +59,32 @@ export class PaypalComponent implements OnInit {
         this.orderService.capturePayment(orderId).subscribe(res => {
           this.router.navigate(['/success']);
         }, error => {console.error(error);})
-      }, error => {console.error(error);})
+      }, error => {
+        let message = this.getServerErrorMessage(error);
+        this.snackBar.open(message, 'Close', { duration: 5000, verticalPosition: 'top' });})
     }, error => {console.error(error);})
 
+  }
+
+  private getServerErrorMessage(error: HttpErrorResponse): string {
+    switch (error.status) {
+      case 404: {
+        return `Not Found: ${error.message}`;
+      }
+      case 403: {
+        return `Access Denied: ${error.message}`;
+      }
+      case 422: {
+        return 'Unprocessable Entity: The value of a field is invalid';
+      }
+      case 500: {
+        return `Internal Server Error: ${error.message}`;
+      }
+      default: {
+        return `Unknown Server Error: ${error.message}`;
+      }
+
+    }
   }
 
   transformDate(inputDate: string): string {
